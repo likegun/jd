@@ -39,14 +39,14 @@ class SearchSpider(scrapy.Spider):
         print '总页数:' + str(self.pageCount)
 
         requests = []
-        for pageNo in range(1, 2):
+        for pageNo in range(1, self.pageCount):
             requests.append(self.start_requests(pageNo, self.parse)[0])
         return requests
 
     # 搜索第一页
     def start_requests(self, page = 1,callback=None):
         return [scrapy.Request(
-            url='https://search.jd.com/s_new.php?keyword=%E8%A3%A4%E5%AD%90&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&suggest=1.his.0.0&page=' + str(page) + '&s=1&click=0',
+            url='https://search.jd.com/s_new.php?keyword=%E8%A3%A4%E5%AD%90&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&suggest=1.his.0.0&page=' + str(page) + '&s=' + str((page-1) * 30)  + '&click=0',
             callback=callback if bool(callback) else self.getPageCount,
             dont_filter=True,
             headers={
